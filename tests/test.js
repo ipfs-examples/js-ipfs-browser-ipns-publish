@@ -13,7 +13,7 @@ const df = createFactory({
   test: true
 });
 const { startServer } = require("test-ipfs-example/utils");
-const pkg = require("./package.json");
+const pkg = require("../package.json");
 
 async function testUI(url, apiAddr, peerAddr, topic) {
   const proc = execa(

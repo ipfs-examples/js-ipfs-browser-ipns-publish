@@ -9,7 +9,6 @@ const cryptoKeys = require("human-crypto-keys"); // { getKeyPairFromSeed }
 const uint8ArrayToString = require('uint8arrays/to-string')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 const { sha256 } = require('multiformats/hashes/sha2')
-
 const WS = require('libp2p-websockets')
 const transportKey = WS.prototype[Symbol.toStringTag]
 const filters = require('libp2p-websockets/src/filters')
@@ -54,7 +53,8 @@ async function main() {
             filter: filters.all
           }
         }
-      }}
+      }
+    }
   });
   const { id } = await ipfsBrowser.id();
   log(`Browser IPFS ready! Node id: ${id}`);
@@ -63,7 +63,7 @@ async function main() {
 
   async function nodeConnect(url) {
     log(`Connecting to ${url}`);
-    ipfsAPI = IpfsHttpClient(url);
+    ipfsAPI = IpfsHttpClient.create(url);
     const { id, agentVersion } = await ipfsAPI.id();
     peerId = id;
     log(`<span class="green">Success!</span>`);
@@ -159,7 +159,7 @@ async function main() {
       try {
         // quick and dirty key gen, don't do this in real life
         const key = await sha256.digest(
-          uint8ArrayFromString(keyName + Math.random().toString(36).substring(2)),
+          uint8ArrayFromString(keyName + Math.random().toString(36).substring(2))
         );
         const keyPair = await cryptoKeys.getKeyPairFromSeed(key.bytes, "rsa");
 
